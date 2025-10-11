@@ -105,7 +105,6 @@ football-shop/
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY . .
-RUN corepack enable && pnpm i && pnpm build
 
 # Serve
 FROM nginx:alpine
