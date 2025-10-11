@@ -125,7 +125,6 @@ docker run -p 8080:80 football-shop
 ## 🔧 Troubleshooting
 - **No carga `products.json`** → verifícalo en `public/` y que la ruta sea `/products.json`.
 - **Imágenes no visibles** → coloca archivos en `public/img/` y usa rutas `/img/...`.
-- **“Pagar ahora” abre WhatsApp** → define `VITE_PAYMENT_LINK` en `.env` y reinicia Vite.
 - **Estado no persiste** → limpia `localStorage` o revisa permisos del navegador.
 
 ---
