@@ -1,5 +1,5 @@
 :root {
-  --bg: #16da47;          
+  --bg: #3f5043;          
   --card: #111712;       
   --line: #1d2a20;       
   --txt: #e6f4ea;         
@@ -378,3 +378,23 @@ button.link.danger { color: var(--danger) }
 }
 
 .footer { max-width: 1500px; margin: 10px auto 24px; }
+
+.login-wrap {
+  min-height: 80vh; display: grid; place-items: center; padding: 24px;
+}
+.login-card {
+  width: 100%; max-width: 380px;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+  display: grid; gap: 10px;
+}
+.login-card h2 { margin: 0 0 6px }
+.login-card input {
+  background: #0f1511; border: 1px solid var(--line); color: var(--txt);
+  border-radius: 10px; padding: 10px; outline: none;
+}
+.login-card input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(31,162,74,.12) }
+.login-card .error { color: #ff6b6b; font-size: 14px }
+.login-card .muted { color: var(--muted); font-size: 14px }
+.login-card .link { color: var(--brand); }
+
