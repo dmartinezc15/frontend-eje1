@@ -6,6 +6,7 @@ import './App.css'
 type ProdEx = Product & { category?: string }
 
 const PAYMENT_LINK = (import.meta as any).env?.VITE_PAYMENT_LINK || ''  // opcional
+const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8000'
 
 export default function ShopApp() {
   const cart = useCart()
@@ -14,7 +15,34 @@ export default function ShopApp() {
   const [openCart, setOpenCart] = useState(false)
   const [cat, setCat] = useState<string>('Todos')
 
-  useEffect(() => { fetch('/products.json').then(r => r.json()).then(setProducts) }, [])
+  useEffect(() => {
+    let cancelled = false
+
+    const load = async () => {
+      try {
+        const params = new URLSearchParams()
+        if (q) params.set('q', q)
+        if (cat && cat !== 'Todos') params.set('category', cat)
+
+        const res = await fetch(`${API_URL}/v1/products?${params.toString()}`)
+        if (!res.ok) throw new Error('API error')
+        const data = await res.json()
+        if (!cancelled) setProducts((data?.items ?? []) as ProdEx[])
+      } catch {
+        // Fallback local
+        try {
+          const resLocal = await fetch('/products.json', { cache: 'no-store' })
+          const local = await resLocal.json()
+          if (!cancelled) setProducts(local as ProdEx[])
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    }
+
+    load()
+    return () => { cancelled = true }
+  }, [q, cat])
   useEffect(() => { document.body.style.overflow = openCart ? 'hidden' : 'auto' }, [openCart])
 
   const categories = useMemo(() => ['Todos', ...Array.from(new Set(products.map(p => p.category || 'Otros')))], [products])
