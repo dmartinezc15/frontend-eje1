@@ -111,7 +111,7 @@ football-shop/
 
 ---
 
-## 🗺️ Roadmap (sin backend)
+## 🗺️ Roadmap (Frontend)
 - Selector de **tallas** y **variantes** en tarjeta y carrito.
 - **Cupones** por % o valor fijo.
 - **Compartir carrito** por URL.
@@ -127,12 +127,6 @@ Frontend (Vite/React) ──▶ API FastAPI (JSON ahora, DB luego)
              │                 └─ /v1/pricing/quote (POST, cupones/envío)
              └───────────────▶ └─ /v1/payment/link (GET)
 ```
-
-## ✨ Features (resumen)
-- Front listo: grilla responsive, chips de categorías, carrito persistente, checkout bar y “Pagar ahora” (link).
-- API lista: productos desde `products.json` (sin BD), **cálculo de totales** con cupón/envío, **ETag/Cache-Control**.
-- Conectividad amigable: el front puede **hacer fallback** a `products.json` si la API falla.
-
 
 ---
 
