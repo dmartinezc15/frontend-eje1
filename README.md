@@ -16,8 +16,10 @@ Sin backend: catálogo estático (`public/products.json`), carrito con **Zustand
 ---
 
 ## 🧰 Requisitos
-- **Node.js 24+**
-- **npm**
+- **Node.js 18+ / 20+** (frontend)
+- **Python 3.11+** (backend)
+- **npm** o **pnpm** (frontend), **pip** (backend)
+
 
 ---
 
@@ -131,12 +133,6 @@ Frontend (Vite/React) ──▶ API FastAPI (JSON ahora, DB luego)
 - API lista: productos desde `products.json` (sin BD), **cálculo de totales** con cupón/envío, **ETag/Cache-Control**.
 - Conectividad amigable: el front puede **hacer fallback** a `products.json` si la API falla.
 
----
-
-## 🧰 Requisitos
-- **Node.js 18+ / 20+** (frontend)
-- **Python 3.11+** (backend)
-- **npm** o **pnpm** (frontend), **pip** (backend)
 
 ---
 
