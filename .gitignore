@@ -18,5 +18,7 @@ frontend/*.zip
 frontend/*.tar.gz
 frontend/*.exe
 frontend/*.dll
-frontend/*.so
+frontend/*.so/package-lock.json
+frontend/package-lock.json
+api/app/__pycache__/
 .venv/
