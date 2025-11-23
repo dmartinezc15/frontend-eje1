@@ -5,7 +5,7 @@ import './App.css'
 
 type ProdEx = Product & { category?: string }
 
-const PAYMENT_LINK = (import.meta as any).env?.VITE_PAYMENT_LINK || ''  // opcional
+
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8000'
 
 export default function ShopApp() {
@@ -62,7 +62,37 @@ export default function ShopApp() {
 
   const waLink = `https://wa.me/573136833122?text=${waText}`
 
-  const payHref = PAYMENT_LINK || waLink
+  async function startCheckout() {
+    try {
+      const body = {
+        items: cart.items.map(i => ({ id: i.id, qty: i.qty })),
+        coupon: cart.coupon || null,
+        delivery_city: 'Bogota',
+        delivery_method: 'standard'
+      }
+
+      const res = await fetch(`${API_URL}/v1/checkout/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+
+      if (!res.ok) throw new Error('Error en checkout')
+
+      const data = await res.json()
+
+      if (data?.payment_url) {
+        // Redirige a la pasarela ficticia
+        window.location.href = data.payment_url
+      } else {
+        // fallback: abre WhatsApp si algo raro pasa
+        window.open(waLink, '_blank')
+      }
+    } catch (e) {
+      console.error(e)
+      window.open(waLink, '_blank')
+    }
+  }
 
   return (
     <>
@@ -139,9 +169,12 @@ export default function ShopApp() {
           </div>
           <div className="cb-actions">
             <button className="ghost" onClick={() => setOpenCart(true)}>Ver carrito</button>
-            <a className="primary" href={payHref} target="_blank" rel="noreferrer">
-              {PAYMENT_LINK ? 'Pagar ahora' : 'Pagar por WhatsApp'}
-            </a>
+            <button className="primary" onClick={startCheckout}>
+              Pagar ahora
+            </button>
+            <button className="ghost" onClick={() => window.open(waLink, '_blank')}>
+              Pagar por WhatsApp
+            </button>
           </div>
         </div>
       )}
@@ -180,10 +213,12 @@ export default function ShopApp() {
               <div className="line"><span>Total</span><strong>${cart.total().toLocaleString()}</strong></div>
             </div>
 
-            <a className="primary block xl" href={payHref} target="_blank" rel="noreferrer">
-              {PAYMENT_LINK ? 'Pagar ahora' : 'Pagar por WhatsApp'}
-            </a>
-            {!PAYMENT_LINK && <small className="muted">Tip: define <code>VITE_PAYMENT_LINK</code> para habilitar “Pagar ahora”.</small>}
+            <button className="primary block xl" onClick={startCheckout}>
+              Pagar ahora
+            </button>
+            <button className="ghost" onClick={() => window.open(waLink, '_blank')}>
+              Pagar por WhatsApp
+            </button>
           </>
         )}
       </aside>
