@@ -70,9 +70,34 @@ class SupabaseRepo:
                         json={"status": status})
             r.raise_for_status()
 
-    def order_update_status(self, order_id: str, status: str):
+    def order_update_status(self, order_id: str, status: str,
+                            receipt_code: str | None = None,
+                            paid_at: str | None = None):
+        payload: dict[str, Any] = {"status": status}
+        if receipt_code is not None:
+            payload["receipt_code"] = receipt_code
+        if paid_at is not None:
+            payload["paid_at"] = paid_at
+
         with httpx.Client(timeout=10.0) as c:
-            r = c.patch(f"{self.base}/orders",
-                        headers=self.headers, params={"id":f"eq.{order_id}"},
-                        json={"status": status})
+            r = c.patch(
+                f"{self.base}/orders",
+                headers=self.headers,
+                params={"id": f"eq.{order_id}"},
+                json=payload
+            )
             r.raise_for_status()
+    
+    def order_with_items(self, order_id: str) -> dict | None:
+        with httpx.Client(timeout=10.0) as c:
+            r = c.get(
+                f"{self.base}/orders",
+                headers=self.headers,
+                params={
+                    "select": "*,order_items(*)",
+                    "id": f"eq.{order_id}"
+                }
+            )
+            r.raise_for_status()
+            arr = r.json()
+            return arr[0] if arr else None

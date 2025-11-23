@@ -44,6 +44,16 @@ export default function ShopApp() {
     return () => { cancelled = true }
   }, [q, cat])
   useEffect(() => { document.body.style.overflow = openCart ? 'hidden' : 'auto' }, [openCart])
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const status = params.get('status')
+
+    if (status === 'success') {
+      cart.clear()
+      setOpenCart(false)
+      window.history.replaceState({}, document.title, window.location.pathname)
+    }
+  }, [cart])
 
   const categories = useMemo(() => ['Todos', ...Array.from(new Set(products.map(p => p.category || 'Otros')))], [products])
 
