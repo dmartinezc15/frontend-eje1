@@ -3,6 +3,7 @@ import { useAuth } from './auth/useAuth'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ShopApp from './ShopApp'
+import CheckoutReturn from './pages/CheckoutReturn'
 import type { JSX } from 'react'
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -17,6 +18,7 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<Login/>} />
       <Route path="/signup" element={<Signup/>} />
+      <Route path="/checkout/return" element={<CheckoutReturn />} />
       <Route path="/" element={
         <RequireAuth>
           <ShopApp/>
